@@ -1,4 +1,4 @@
-/* Reset y estilos globales inyectados en el Host y Remotos */
+/* src/styles/global.scss */
 @use 'variables';
 
 *, *::before, *::after {
@@ -14,5 +14,8 @@ body {
   -webkit-font-smoothing: antialiased;
   width: 100vw;
   height: 100vh;
-  overflow: hidden; /* El scroll lo maneja el main content */
+  overflow: hidden;
+  
+  /* La magia: Transición suave al cambiar de tema */
+  transition: background-color 0.3s ease, color 0.3s ease;
 }

@@ -1,18 +1,28 @@
-/* Variables globales de la arquitectura */
+/* src/styles/_variables.scss */
+
+/* 1. Variables Comunes (No cambian con el tema) */
 :root {
-  /* Paleta Dark Premium */
+  --font-primary: 'Inter', system-ui, -apple-system, sans-serif;
+  --header-height: 80px;
+  --sidebar-width: 260px;
+}
+
+/* 2. TEMA OSCURO (Nuestro tema por defecto) */
+:root, [data-theme="dark"] {
   --color-bg-base: #050505;
   --color-surface: #0a0a0a;
   --color-border: #1f1f1f;
-  
-  /* Textos */
   --color-text-main: #ffffff;
   --color-text-muted: #a1a1aa;
-  
-  /* Layout */
-  --header-height: 80px;
-  --sidebar-width: 260px;
+  --color-accent: #3b82f6; /* Azul eléctrico */
+}
 
-  /* Tipografía */
-  --font-primary: 'Inter', system-ui, -apple-system, sans-serif;
+/* 3. TEMA CLARO (Con tu color premium) */
+[data-theme="light"] {
+  --color-bg-base: rgba(232, 232, 246, 1); /* El fondo que pediste */
+  --color-surface: #ffffff;               /* Tarjetas y Navbar en blanco puro para contrastar */
+  --color-border: #d1d5db;                /* Gris suave para bordes */
+  --color-text-main: #0f172a;             /* Texto oscuro casi negro */
+  --color-text-muted: #64748b;            /* Texto secundario grisáceo */
+  --color-accent: #2563eb;                /* Azul ligeramente más oscuro para accesibilidad */
 }
