@@ -26,7 +26,6 @@ const SunIcon = () => (
 const getInitialTheme = (): 'light' | 'dark' => {
   const stored = document.documentElement.getAttribute('data-theme');
   if (stored === 'dark') return 'dark';
-  if (!stored && window.matchMedia('(prefers-color-scheme: dark)').matches) return 'dark';
   return 'light';
 };
 
