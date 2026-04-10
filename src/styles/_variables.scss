@@ -1,0 +1,18 @@
+/* Variables globales de la arquitectura */
+:root {
+  /* Paleta Dark Premium */
+  --color-bg-base: #050505;
+  --color-surface: #0a0a0a;
+  --color-border: #1f1f1f;
+  
+  /* Textos */
+  --color-text-main: #ffffff;
+  --color-text-muted: #a1a1aa;
+  
+  /* Layout */
+  --header-height: 80px;
+  --sidebar-width: 260px;
+
+  /* Tipografía */
+  --font-primary: 'Inter', system-ui, -apple-system, sans-serif;
+}
