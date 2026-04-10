@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { NavbarProps } from './Navbar.types';
+import type { NavbarProps } from './Navbar.types';
 import './Navbar.scss';
 
 // Iconos SVG simples para evitar dependencias externas por ahora
@@ -23,23 +23,20 @@ const SunIcon = () => (
   </svg>
 );
 
-const Navbar = ({ links }: NavbarProps) => {
-  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+const getInitialTheme = (): 'light' | 'dark' => {
+  const stored = document.documentElement.getAttribute('data-theme');
+  if (stored === 'dark') return 'dark';
+  if (!stored && window.matchMedia('(prefers-color-scheme: dark)').matches) return 'dark';
+  return 'light';
+};
 
-  // Inicializar el tema basado en el atributo data-theme o preferencia del sistema
+const Navbar = ({ links }: NavbarProps) => {
+  const [theme, setTheme] = useState<'light' | 'dark'>(getInitialTheme);
+
+  // Sincronizar el atributo data-theme del DOM cuando cambie el estado
   useEffect(() => {
-    const currentTheme = document.documentElement.getAttribute('data-theme');
-    if (currentTheme === 'dark') {
-      setTheme('dark');
-    } else if (!currentTheme && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-       // Opcional: leer preferencia del sistema si no hay tema definido
-       setTheme('dark');
-       document.documentElement.setAttribute('data-theme', 'dark');
-    } else {
-       // Forzar modo claro inicial para coincidir con tu solicitud
-       document.documentElement.setAttribute('data-theme', 'light');
-    }
-  }, []);
+    document.documentElement.setAttribute('data-theme', theme);
+  }, [theme]);
 
   const toggleTheme = () => {
     const newTheme = theme === 'light' ? 'dark' : 'light';
