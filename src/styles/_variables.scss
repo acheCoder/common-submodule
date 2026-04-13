@@ -5,6 +5,7 @@
   --font-primary: 'Inter', system-ui, -apple-system, sans-serif;
   --header-height: 80px;
   --sidebar-width: 260px;
+  --content-padding-x: clamp(1rem, 5vw, 6rem);
 }
 
 /* 2. TEMA OSCURO (Nuestro tema por defecto) */

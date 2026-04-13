@@ -15,6 +15,8 @@ body {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
+  padding-left: var(--content-padding-x);
+  padding-right: var(--content-padding-x);
   
   /* La magia: Transición suave al cambiar de tema */
   transition: background-color 0.3s ease, color 0.3s ease;
