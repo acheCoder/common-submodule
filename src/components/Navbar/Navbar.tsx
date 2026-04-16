@@ -47,6 +47,7 @@ const LANG_OPTIONS = [
 const Navbar = ({ links, lang = 'es' }: NavbarProps) => {
   const [theme, setTheme] = useState<'light' | 'dark'>(getInitialTheme);
   const [langOpen, setLangOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
   const langRef = useRef<HTMLDivElement>(null);
 
   // Sincronizar el atributo data-theme del DOM cuando cambie el estado
@@ -65,6 +66,12 @@ const Navbar = ({ links, lang = 'es' }: NavbarProps) => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  // Bloquear scroll del body cuando el menú está abierto
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [menuOpen]);
+
   const toggleTheme = () => {
     const newTheme = theme === 'light' ? 'dark' : 'light';
     setTheme(newTheme);
@@ -78,16 +85,27 @@ const Navbar = ({ links, lang = 'es' }: NavbarProps) => {
 
   return (
     <div className="navbar-container">
-      <nav className="navbar-pill">
-        <ul className="nav-links">
+      <nav className={`navbar-pill${menuOpen ? ' navbar-pill--open' : ''}`}>
+        <button
+          className={`burger-btn${menuOpen ? ' burger-btn--open' : ''}`}
+          onClick={() => setMenuOpen(!menuOpen)}
+          aria-label="Menú"
+          type="button"
+        >
+          <span />
+          <span />
+          <span />
+        </button>
+
+        <ul className={`nav-links${menuOpen ? ' nav-links--open' : ''}`}>
           {links.map((link, index) => (
             <li key={index}>
               {link.href.startsWith('/') ? (
-                <Link to={link.href} className="nav-item">
+                <Link to={link.href} className="nav-item" onClick={() => setMenuOpen(false)}>
                   {link.label}
                 </Link>
               ) : (
-                <a href={link.href} className="nav-item">
+                <a href={link.href} className="nav-item" onClick={() => setMenuOpen(false)}>
                   {link.label}
                 </a>
               )}

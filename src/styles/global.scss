@@ -29,3 +29,13 @@ body {
 a, button, [role="button"], input, select, textarea {
   cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24'><circle cx='12' cy='12' r='8' fill='%23ff6b00' fill-opacity='0.4'/></svg>") 12 12, pointer !important;
 }
+
+/* Deshabilitar custom cursor en dispositivos táctiles */
+@media (pointer: coarse) {
+  body {
+    cursor: auto;
+  }
+  a, button, [role="button"], input, select, textarea {
+    cursor: pointer !important;
+  }
+}
