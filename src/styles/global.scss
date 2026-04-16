@@ -12,12 +12,20 @@ body {
   color: var(--color-text-main);
   font-family: var(--font-primary);
   -webkit-font-smoothing: antialiased;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
   padding-left: var(--content-padding-x);
   padding-right: var(--content-padding-x);
   
   /* La magia: Transición suave al cambiar de tema */
   transition: background-color 0.3s ease, color 0.3s ease;
+
+  /* Custom Cursor: Punto naranja minimalista */
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24'><circle cx='12' cy='12' r='4' fill='%23ff6b00'/></svg>") 12 12, auto;
+}
+
+/* Elementos interactivos: punto más grande con transparencia */
+a, button, [role="button"], input, select, textarea {
+  cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24'><circle cx='12' cy='12' r='8' fill='%23ff6b00' fill-opacity='0.4'/></svg>") 12 12, pointer !important;
 }

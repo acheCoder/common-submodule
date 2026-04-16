@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import type { NavbarProps } from './Navbar.types';
 import './Navbar.scss';
 
@@ -23,24 +24,56 @@ const SunIcon = () => (
   </svg>
 );
 
+const GlobeIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="12" cy="12" r="10"></circle>
+    <path d="M2 12h20"></path>
+    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+  </svg>
+);
+
 const getInitialTheme = (): 'light' | 'dark' => {
   const stored = document.documentElement.getAttribute('data-theme');
   if (stored === 'dark') return 'dark';
   return 'light';
 };
 
-const Navbar = ({ links }: NavbarProps) => {
+const LANG_OPTIONS = [
+  { value: 'es', label: 'ES', name: 'Español' },
+  { value: 'en', label: 'EN', name: 'English' },
+  { value: 'pl', label: 'PL', name: 'Polski' },
+];
+
+const Navbar = ({ links, lang = 'es' }: NavbarProps) => {
   const [theme, setTheme] = useState<'light' | 'dark'>(getInitialTheme);
+  const [langOpen, setLangOpen] = useState(false);
+  const langRef = useRef<HTMLDivElement>(null);
 
   // Sincronizar el atributo data-theme del DOM cuando cambie el estado
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
   }, [theme]);
 
+  // Cerrar dropdown al hacer click fuera
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (langRef.current && !langRef.current.contains(e.target as Node)) {
+        setLangOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   const toggleTheme = () => {
     const newTheme = theme === 'light' ? 'dark' : 'light';
     setTheme(newTheme);
     document.documentElement.setAttribute('data-theme', newTheme);
+  };
+
+  const handleLangChange = (newLang: string) => {
+    window.dispatchEvent(new CustomEvent('change-language', { detail: newLang }));
+    setLangOpen(false);
   };
 
   return (
@@ -49,9 +82,15 @@ const Navbar = ({ links }: NavbarProps) => {
         <ul className="nav-links">
           {links.map((link, index) => (
             <li key={index}>
-              <a href={link.href} className="nav-item">
-                {link.label}
-              </a>
+              {link.href.startsWith('/') ? (
+                <Link to={link.href} className="nav-item">
+                  {link.label}
+                </Link>
+              ) : (
+                <a href={link.href} className="nav-item">
+                  {link.label}
+                </a>
+              )}
             </li>
           ))}
         </ul>
@@ -62,6 +101,35 @@ const Navbar = ({ links }: NavbarProps) => {
         >
           {theme === 'light' ? <MoonIcon /> : <SunIcon />}
         </button>
+
+        <div className="lang-dropdown" ref={langRef}>
+          <button
+            className="lang-dropdown__trigger"
+            onClick={() => setLangOpen(!langOpen)}
+            aria-label="Cambiar idioma"
+            type="button"
+          >
+            <GlobeIcon />
+            <span className="lang-dropdown__current">{lang.toUpperCase()}</span>
+          </button>
+
+          {langOpen && (
+            <ul className="lang-dropdown__menu">
+              {LANG_OPTIONS.map((opt) => (
+                <li key={opt.value}>
+                  <button
+                    className={`lang-dropdown__item${lang === opt.value ? ' lang-dropdown__item--active' : ''}`}
+                    onClick={() => handleLangChange(opt.value)}
+                    type="button"
+                  >
+                    <span className="lang-dropdown__label">{opt.label}</span>
+                    <span className="lang-dropdown__name">{opt.name}</span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       </nav>
     </div>
   );

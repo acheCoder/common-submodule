@@ -3,27 +3,31 @@
 /* 1. Variables Comunes (No cambian con el tema) */
 :root {
   --font-primary: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-hero: 'Red Hat Display', sans-serif;
+
   --header-height: 80px;
   --sidebar-width: 260px;
   --content-padding-x: clamp(1rem, 5vw, 6rem);
+
+  /* Accent único de marca — no cambia con el tema */
+  --color-accent: #FF914D;
+  --color-accent-glow: rgba(255, 145, 77, 0.25);
 }
 
-/* 2. TEMA OSCURO (Nuestro tema por defecto) */
+/* 2. TEMA OSCURO (por defecto) */
 :root, [data-theme="dark"] {
   --color-bg-base: #050505;
   --color-surface: #0a0a0a;
   --color-border: #1f1f1f;
   --color-text-main: #ffffff;
   --color-text-muted: #a1a1aa;
-  --color-accent: #3b82f6; /* Azul eléctrico */
 }
 
-/* 3. TEMA CLARO (Con tu color premium) */
+/* 3. TEMA CLARO */
 [data-theme="light"] {
-  --color-bg-base: rgba(232, 232, 246, 1); /* El fondo que pediste */
-  --color-surface: #ffffff;               /* Tarjetas y Navbar en blanco puro para contrastar */
-  --color-border: #d1d5db;                /* Gris suave para bordes */
-  --color-text-main: #0f172a;             /* Texto oscuro casi negro */
-  --color-text-muted: #64748b;            /* Texto secundario grisáceo */
-  --color-accent: #2563eb;                /* Azul ligeramente más oscuro para accesibilidad */
+  --color-bg-base: rgba(232, 232, 246, 1);
+  --color-surface: #ffffff;
+  --color-border: #d1d5db;
+  --color-text-main: #0f172a;
+  --color-text-muted: #64748b;
 }
