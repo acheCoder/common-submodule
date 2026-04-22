@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useCallback, useEffect } from 'react';
 import type { ReactNode } from 'react';
 
-export type Language = 'es' | 'en' | 'pl';
+export type Language = 'es' | 'en';
 
 interface I18nContextValue {
   lang: Language;
@@ -16,7 +16,6 @@ const I18nContext = createContext<I18nContextValue | null>(null);
 const translationStore: Record<Language, Record<string, string>> = {
   es: {},
   en: {},
-  pl: {},
 };
 
 export const I18nProvider = ({ children }: { children: ReactNode }) => {
@@ -24,6 +23,9 @@ export const I18nProvider = ({ children }: { children: ReactNode }) => {
     const stored = localStorage.getItem('hubert-lang');
     return (stored as Language) || 'es';
   });
+
+  // Counter to force re-render when translations are registered
+  const [, setVersion] = useState(0);
 
   const setLang = useCallback((newLang: Language) => {
     setLangState(newLang);
@@ -39,6 +41,7 @@ export const I18nProvider = ({ children }: { children: ReactNode }) => {
     for (const l of Object.keys(translations) as Language[]) {
       Object.assign(translationStore[l], translations[l]);
     }
+    setVersion(v => v + 1);
   }, []);
 
   const t = useCallback((key: string): string => {

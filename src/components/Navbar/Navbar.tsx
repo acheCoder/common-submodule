@@ -41,10 +41,9 @@ const getInitialTheme = (): 'light' | 'dark' => {
 const LANG_OPTIONS = [
   { value: 'es', label: 'ES', name: 'Español' },
   { value: 'en', label: 'EN', name: 'English' },
-  { value: 'pl', label: 'PL', name: 'Polski' },
 ];
 
-const Navbar = ({ links, lang = 'es' }: NavbarProps) => {
+const Navbar = ({ links, lang = 'es', logoSrc }: NavbarProps) => {
   const [theme, setTheme] = useState<'light' | 'dark'>(getInitialTheme);
   const [langOpen, setLangOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -86,17 +85,11 @@ const Navbar = ({ links, lang = 'es' }: NavbarProps) => {
   return (
     <div className="navbar-container">
       <nav className={`navbar-pill${menuOpen ? ' navbar-pill--open' : ''}`}>
-        <button
-          className={`burger-btn${menuOpen ? ' burger-btn--open' : ''}`}
-          onClick={() => setMenuOpen(!menuOpen)}
-          aria-label="Menú"
-          type="button"
-        >
-          <span />
-          <span />
-          <span />
-        </button>
-
+        {logoSrc && (
+          <a href="#" className="navbar-logo">
+            <img src={logoSrc} alt="Logo" className="navbar-logo__img" />
+          </a>
+        )}
         <ul className={`nav-links${menuOpen ? ' nav-links--open' : ''}`}>
           {links.map((link, index) => (
             <li key={index}>
@@ -112,41 +105,55 @@ const Navbar = ({ links, lang = 'es' }: NavbarProps) => {
             </li>
           ))}
         </ul>
-        <button 
-          onClick={toggleTheme} 
-          className="theme-toggle-btn"
-          aria-label="Alternar modo claro/oscuro"
-        >
-          {theme === 'light' ? <MoonIcon /> : <SunIcon />}
-        </button>
 
-        <div className="lang-dropdown" ref={langRef}>
-          <button
-            className="lang-dropdown__trigger"
-            onClick={() => setLangOpen(!langOpen)}
-            aria-label="Cambiar idioma"
-            type="button"
+        <div className="navbar-actions">
+          <button 
+            onClick={toggleTheme} 
+            className="theme-toggle-btn"
+            aria-label="Alternar modo claro/oscuro"
           >
-            <GlobeIcon />
-            <span className="lang-dropdown__current">{lang.toUpperCase()}</span>
+            {theme === 'light' ? <MoonIcon /> : <SunIcon />}
           </button>
 
-          {langOpen && (
-            <ul className="lang-dropdown__menu">
-              {LANG_OPTIONS.map((opt) => (
-                <li key={opt.value}>
-                  <button
-                    className={`lang-dropdown__item${lang === opt.value ? ' lang-dropdown__item--active' : ''}`}
-                    onClick={() => handleLangChange(opt.value)}
-                    type="button"
-                  >
-                    <span className="lang-dropdown__label">{opt.label}</span>
-                    <span className="lang-dropdown__name">{opt.name}</span>
-                  </button>
-                </li>
-              ))}
-            </ul>
-          )}
+          <div className="lang-dropdown" ref={langRef}>
+            <button
+              className="lang-dropdown__trigger"
+              onClick={() => setLangOpen(!langOpen)}
+              aria-label="Cambiar idioma"
+              type="button"
+            >
+              <GlobeIcon />
+              <span className="lang-dropdown__current">{lang.toUpperCase()}</span>
+            </button>
+
+            {langOpen && (
+              <ul className="lang-dropdown__menu">
+                {LANG_OPTIONS.map((opt) => (
+                  <li key={opt.value}>
+                    <button
+                      className={`lang-dropdown__item${lang === opt.value ? ' lang-dropdown__item--active' : ''}`}
+                      onClick={() => handleLangChange(opt.value)}
+                      type="button"
+                    >
+                      <span className="lang-dropdown__label">{opt.label}</span>
+                      <span className="lang-dropdown__name">{opt.name}</span>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+
+          <button
+            className={`burger-btn${menuOpen ? ' burger-btn--open' : ''}`}
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Menú"
+            type="button"
+          >
+            <span />
+            <span />
+            <span />
+          </button>
         </div>
       </nav>
     </div>
