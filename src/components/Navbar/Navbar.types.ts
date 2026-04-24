@@ -7,4 +7,6 @@ export interface NavbarProps {
   links: NavLink[];
   lang?: string;
   logoSrc?: string;
+  ctaLabel?: string;
+  ctaHref?: string;
 }

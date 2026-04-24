@@ -43,7 +43,7 @@ const LANG_OPTIONS = [
   { value: 'en', label: 'EN', name: 'English' },
 ];
 
-const Navbar = ({ links, lang = 'es', logoSrc }: NavbarProps) => {
+const Navbar = ({ links, lang = 'es', logoSrc, ctaLabel, ctaHref }: NavbarProps) => {
   const [theme, setTheme] = useState<'light' | 'dark'>(getInitialTheme);
   const [langOpen, setLangOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -93,7 +93,7 @@ const Navbar = ({ links, lang = 'es', logoSrc }: NavbarProps) => {
         <ul className={`nav-links${menuOpen ? ' nav-links--open' : ''}`}>
           {links.map((link, index) => (
             <li key={index}>
-              {link.href.startsWith('/') ? (
+              {link.href.startsWith('/') && !link.href.includes('#') ? (
                 <Link to={link.href} className="nav-item" onClick={() => setMenuOpen(false)}>
                   {link.label}
                 </Link>
@@ -107,6 +107,9 @@ const Navbar = ({ links, lang = 'es', logoSrc }: NavbarProps) => {
         </ul>
 
         <div className="navbar-actions">
+          {ctaLabel && (
+            <a href={ctaHref || '#'} className="navbar-cta">{ctaLabel}</a>
+          )}
           <button 
             onClick={toggleTheme} 
             className="theme-toggle-btn"
